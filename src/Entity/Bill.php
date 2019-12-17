@@ -44,13 +44,13 @@ class Bill
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", inversedBy="bills")
+     * @ORM\OneToMany(targetEntity="App\Entity\PurchasedProducts", mappedBy="bill")
      */
-    private $products;
+    private $purchasedProducts;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->purchasedProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,26 +119,31 @@ class Bill
     }
 
     /**
-     * @return Collection|Product[]
+     * @return Collection|PurchasedProducts[]
      */
-    public function getProducts(): Collection
+    public function getPurchasedProducts(): Collection
     {
-        return $this->products;
+        return $this->purchasedProducts;
     }
 
-    public function addProduct(Product $product): self
+    public function addPurchasedProduct(PurchasedProducts $purchasedProduct): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
+        if (!$this->purchasedProducts->contains($purchasedProduct)) {
+            $this->purchasedProducts[] = $purchasedProduct;
+            $purchasedProduct->setBill($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function removePurchasedProduct(PurchasedProducts $purchasedProduct): self
     {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
+        if ($this->purchasedProducts->contains($purchasedProduct)) {
+            $this->purchasedProducts->removeElement($purchasedProduct);
+            // set the owning side to null (unless already changed)
+            if ($purchasedProduct->getBill() === $this) {
+                $purchasedProduct->setBill(null);
+            }
         }
 
         return $this;

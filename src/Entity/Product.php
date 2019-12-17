@@ -89,19 +89,20 @@ class Product
     private $available;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Bill", mappedBy="products")
-     */
-    private $bills;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="product")
      */
     private $inventories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PurchasedProducts", mappedBy="product")
+     */
+    private $purchasedProducts;
 
     public function __construct()
     {
         $this->bills = new ArrayCollection();
         $this->inventories = new ArrayCollection();
+        $this->purchasedProducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -278,34 +279,6 @@ class Product
     }
 
     /**
-     * @return Collection|Bill[]
-     */
-    public function getBills(): Collection
-    {
-        return $this->bills;
-    }
-
-    public function addBill(Bill $bill): self
-    {
-        if (!$this->bills->contains($bill)) {
-            $this->bills[] = $bill;
-            $bill->addProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBill(Bill $bill): self
-    {
-        if ($this->bills->contains($bill)) {
-            $this->bills->removeElement($bill);
-            $bill->removeProduct($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Inventory[]
      */
     public function getInventories(): Collection
@@ -330,6 +303,37 @@ class Product
             // set the owning side to null (unless already changed)
             if ($inventory->getProduct() === $this) {
                 $inventory->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PurchasedProducts[]
+     */
+    public function getPurchasedProducts(): Collection
+    {
+        return $this->purchasedProducts;
+    }
+
+    public function addPurchasedProduct(PurchasedProducts $purchasedProduct): self
+    {
+        if (!$this->purchasedProducts->contains($purchasedProduct)) {
+            $this->purchasedProducts[] = $purchasedProduct;
+            $purchasedProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removePurchasedProduct(PurchasedProducts $purchasedProduct): self
+    {
+        if ($this->purchasedProducts->contains($purchasedProduct)) {
+            $this->purchasedProducts->removeElement($purchasedProduct);
+            // set the owning side to null (unless already changed)
+            if ($purchasedProduct->getProduct() === $this) {
+                $purchasedProduct->setProduct(null);
             }
         }
 
