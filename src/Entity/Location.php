@@ -1,25 +1,22 @@
 <?php
-// src/Entity/User.php
 
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
  */
-class User extends BaseUser
+class Location
 {
     /**
-     * @ORM\Id
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -42,15 +39,18 @@ class User extends BaseUser
     private $city;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Bill", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Inventory", mappedBy="location")
      */
-    private $bills;
+    private $inventories;
 
     public function __construct()
     {
-        parent::__construct();
-        $this->bills = new ArrayCollection();
-        // your own logic
+        $this->inventories = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getStreet(): ?string
@@ -102,30 +102,30 @@ class User extends BaseUser
     }
 
     /**
-     * @return Collection|Bill[]
+     * @return Collection|Inventory[]
      */
-    public function getBills(): Collection
+    public function getInventories(): Collection
     {
-        return $this->bills;
+        return $this->inventories;
     }
 
-    public function addBill(Bill $bill): self
+    public function addInventory(Inventory $inventory): self
     {
-        if (!$this->bills->contains($bill)) {
-            $this->bills[] = $bill;
-            $bill->setUser($this);
+        if (!$this->inventories->contains($inventory)) {
+            $this->inventories[] = $inventory;
+            $inventory->setLocation($this);
         }
 
         return $this;
     }
 
-    public function removeBill(Bill $bill): self
+    public function removeInventory(Inventory $inventory): self
     {
-        if ($this->bills->contains($bill)) {
-            $this->bills->removeElement($bill);
+        if ($this->inventories->contains($inventory)) {
+            $this->inventories->removeElement($inventory);
             // set the owning side to null (unless already changed)
-            if ($bill->getUser() === $this) {
-                $bill->setUser(null);
+            if ($inventory->getLocation() === $this) {
+                $inventory->setLocation(null);
             }
         }
 
