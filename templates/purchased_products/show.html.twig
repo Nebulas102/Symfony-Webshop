@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PurchasedProducts{% endblock %}
+
+{% block body %}
+    <h1>PurchasedProducts</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ purchased_product.id }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ purchased_product.quantity }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('purchased_products_index') }}">back to list</a>
+
+    <a href="{{ path('purchased_products_edit', {'id': purchased_product.id}) }}">edit</a>
+
+    {{ include('purchased_products/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PriceProduct index{% endblock %}
+
+{% block body %}
+    <h1>PriceProduct index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Price</th>
+                <th>Startdate</th>
+                <th>Enddate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for price_product in price_products %}
+            <tr>
+                <td>{{ price_product.id }}</td>
+                <td>{{ price_product.price }}</td>
+                <td>{{ price_product.startdate ? price_product.startdate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ price_product.enddate ? price_product.enddate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('price_product_show', {'id': price_product.id}) }}">show</a>
+                    <a href="{{ path('price_product_edit', {'id': price_product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('price_product_new') }}">Create new</a>
+{% endblock %}

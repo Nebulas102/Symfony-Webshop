@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bill{% endblock %}
+
+{% block body %}
+    <h1>Bill</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ bill.id }}</td>
+            </tr>
+            <tr>
+                <th>Purchasedate</th>
+                <td>{{ bill.purchasedate ? bill.purchasedate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Deliverydate</th>
+                <td>{{ bill.deliverydate ? bill.deliverydate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Total_price</th>
+                <td>{{ bill.totalPrice }}</td>
+            </tr>
+            <tr>
+                <th>Total_quantity</th>
+                <td>{{ bill.totalQuantity }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('bill_index') }}">back to list</a>
+
+    <a href="{{ path('bill_edit', {'id': bill.id}) }}">edit</a>
+
+    {{ include('bill/_delete_form.html.twig') }}
+{% endblock %}

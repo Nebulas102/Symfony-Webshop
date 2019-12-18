@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AvailabilityProduct index{% endblock %}
+
+{% block body %}
+    <h1>AvailabilityProduct index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Available</th>
+                <th>Startdate</th>
+                <th>Enddate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for availability_product in availability_products %}
+            <tr>
+                <td>{{ availability_product.id }}</td>
+                <td>{{ availability_product.available ? 'Yes' : 'No' }}</td>
+                <td>{{ availability_product.startdate ? availability_product.startdate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ availability_product.enddate ? availability_product.enddate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('availability_product_show', {'id': availability_product.id}) }}">show</a>
+                    <a href="{{ path('availability_product_edit', {'id': availability_product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('availability_product_new') }}">Create new</a>
+{% endblock %}
