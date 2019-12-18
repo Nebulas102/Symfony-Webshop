@@ -21,7 +21,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/shop/{slug}/", name="type_category", methods={"GET"})
+     * @Route("/{slug}/", name="type_category", methods={"GET"})
      */
     public function typeCategories(Type $type, TypeRepository $typeRepository)
     {
@@ -34,7 +34,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/shop/{type_slug}/{slug}/", name="category_product", methods={"GET"})
+     * @Route("/{type_slug}/{slug}/", name="category_product", methods={"GET"})
      */
     public function categoryProducts(Type $type, Category $category)
     {
