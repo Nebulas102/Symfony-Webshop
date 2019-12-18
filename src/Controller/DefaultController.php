@@ -23,12 +23,13 @@ class DefaultController extends AbstractController
     /**
      * @Route("/shop/{slug}/", name="type_category", methods={"GET"})
      */
-    public function typeCategories(Type $type)
+    public function typeCategories(Type $type, TypeRepository $typeRepository)
     {
         $categories = $type->getCategories();
         
         return $this->render('default/type.html.twig', [
             'categories' => $categories,
+            'types' => $typeRepository->findAll(),
         ]);
     }
 
